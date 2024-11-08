@@ -18,7 +18,13 @@ public class UserChoiceOperation {
 		
 		PreparedStatement ps1 = con.prepareStatement("insert into Product68 values(?,?,?,?)");
 		
-		PreparedStatement ps2 = con.prepareStatement("select * from Product68");//Compilation
+		PreparedStatement ps2 = con.prepareStatement("select * from Product68");
+		
+		PreparedStatement ps3 = con.prepareStatement("select * from Product68 where code=?");
+				
+		PreparedStatement ps4 = con.prepareStatement("update Product68 set price=?,qty=qty+? where code=?");
+				
+		PreparedStatement ps5 = con.prepareStatement("delete from Product68 where code=?");
 		
 		while(true) 
 		{
@@ -47,12 +53,12 @@ public class UserChoiceOperation {
 				System.out.println("Enter the Prod-Qty:");
 				int pQ = Integer.parseInt(s.nextLine());
 				
-				//Loading data to PreparedStatement Object
+				
 				ps1.setString(1,pC);
 				ps1.setString(2,pN);
 				ps1.setFloat(3,pP);
 				ps1.setInt(4,pQ);
-				int k = ps1.executeUpdate();//Execution
+				int k = ps1.executeUpdate();
 				if(k>0) 
 				{
 					System.out.println("Product Added Successfully...");
@@ -60,21 +66,79 @@ public class UserChoiceOperation {
 				break;
 				
 			case 2:
-				ResultSet rs = ps2.executeQuery();//Execution
+				ResultSet rs = ps2.executeQuery();
 				System.out.println("-----ProductDetails------");
 				while(rs.next()) 
 				{
 					System.out.println(rs.getString(1)+"\t"+rs.getString(2)+"\t"+rs.getFloat(3)+"\t"+rs.getInt(4));
-				}//end of loop
+				}
 				break;
 				
 			case 3:
+				System.out.println("Enter the Produc-Code to display details:");
+				String pC2 = s.nextLine();
+				ps3.setString(1, pC2);
+				ResultSet rs2 = ps3.executeQuery();
+				if(rs2.next())
+				{
+					System.out.println(rs2.getString(1)+"\t"+rs2.getString(2)+"\t"+rs2.getFloat(3)+"\t"+rs2.getInt(4));
+				}
+				else
+				{
+					System.out.println("Invalid Product-Code....");
+				}
 				break;
 			
 			case 4:
+				System.out.println("Enter the Product-Code to update Price and qty:");
+				String pC3 = s.nextLine();
+				ps3.setString(1, pC3);
+				ResultSet rs3 = ps3.executeQuery();
+				if(rs3.next()) 
+				{
+					System.out.println("Old Price :"+rs3.getFloat(3));
+					System.out.println("Enter the New Price:");
+					float nPrice = Float.parseFloat(s.nextLine());
+					System.out.println("Existing qty :"+rs3.getInt(4));
+	
+					System.out.println("Enter the new qty(new stock):");
+					int nQty = Integer.parseInt(s.nextLine());
+	
+					ps4.setFloat(1, nPrice);
+					ps4.setInt(2, nQty);
+					ps4.setString(3, pC3);
+					int k2 = ps4.executeUpdate();
+					
+					if(k2>0) 
+					{
+						System.out.println("Product Updated Successfully...");
+					}
+				}
+				else 
+				{
+					System.out.println("Invalid Product-Code....");
+				}
 				break;
 				
 			case 5:
+				System.out.println("Enter the Product-Code to delete details:");
+				String pC4 = s.nextLine();
+				ps3.setString(1, pC4);
+				ResultSet rs4 =ps3.executeQuery();
+				if(rs4.next()) 
+				{
+					ps5.setString(1, pC4);
+					int k3 = ps5.executeUpdate();
+					if(k3>0) 
+					{
+						System.out.println("Product deleted Successfully...");
+					}
+
+				}
+				else 
+				{
+					System.out.println("Invalid Product Code....");
+				}
 				break;
 				
 			case 6:
@@ -84,8 +148,8 @@ public class UserChoiceOperation {
 			default:
 				System.out.println("Invalid Choice...");
 				
-			}//end of switch
-		}//end of loop
+			}
+		}
 		
 		}
 		catch(Exception e)
