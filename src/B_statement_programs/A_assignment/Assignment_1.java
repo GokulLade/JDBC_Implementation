@@ -1,24 +1,17 @@
 package B_statement_programs.A_assignment;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import A_connection_to_database.DatabaseConnection;
 
 public class Assignment_1 {
 	public static void main(String[] args) 
 	{
-		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-		} 
-		catch(ClassNotFoundException e) {
-			e.printStackTrace();
-		}
 		
 		try {
-			Connection con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:orcl","Gokul","9112");
-			
+			Connection con=DatabaseConnection.getConnection();
 			Statement stm=con.createStatement();
 			
 			ResultSet rs=stm.executeQuery("select * from BookDetails68");
