@@ -26,7 +26,7 @@ public class StoringImageProgram {
 			ps.setInt(1, id);
 			
 			System.out.println("Enter the Image name with full path to store");
-			String path=sc.nextLine();
+			String path=sc.nextLine();//C:\Documents\imageid101.png
 			
 			File f=new File(path);
 			
